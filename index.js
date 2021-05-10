@@ -3,9 +3,7 @@ var nodemailer = require('nodemailer');
 const promptly = require('promptly');
 
 const kaam_k_center = [];
-
-var email_content = "<h3>Vaccine available at these centers: </h3>";
-
+var receivers = [];
 var transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -16,7 +14,7 @@ var transporter = nodemailer.createTransport({
 
    const mailOptions = {
     from: 'Notification Service covid@notification.com', // sender address
-    to: ['sanujbansal25@gmail.com', 'piyushbansal115@gmail.com'], // list of receivers
+    to: receivers, // list of receivers
     subject: '18+ vaccination available book now', // Subject line
     html: "Hello This is email from server running at sanuj's pc to tell that 18+ vaccine is now available" // plain text body
   };
@@ -24,7 +22,7 @@ var transporter = nodemailer.createTransport({
 const script = async () => {
     const browser = await puppeteer.launch({
         executablePath: 'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe',
-        headless: false
+        headless: true
     });
 
     const validator = function (value) {
@@ -33,10 +31,15 @@ const script = async () => {
         }
         return value;
     };
+
+    await promptly.prompt("enter list of emails seperated by spaces").then((input) => {
+        receivers = input.split(" ");
+    });
     const page = await browser.newPage();
+    await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36');
+    await page.setViewport({ height: 600, width: 800 });
     await page.goto('https://selfregistration.cowin.gov.in/', { waitUntil: 'networkidle0' });
     await page.waitForSelector('#mat-input-0');
-    console.log('mat-input-0 found');
     await page.type('#mat-input-0', "8882525935", { delay: 20});
     await page.click('div[class="covid-button-desktop ion-text-center"]', {delay: 2000});
     const otp = await promptly.prompt('OTP: ', { validator });
@@ -74,7 +77,6 @@ const script = async () => {
                     page.click('#main-content > app-appointment-table > ion-content > div > div > ion-grid > ion-row > ion-grid > ion-row > ion-col > ion-grid > ion-row > ion-col:nth-child(2) > form > ion-grid > ion-row > ion-col.col-padding.ion-text-start.ng-star-inserted.md.hydrated > ion-button');
                 }, 200000)
             }).catch(err => {
-                console.log(err);
             });
         }
     })
