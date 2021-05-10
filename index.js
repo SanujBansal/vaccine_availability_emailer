@@ -61,11 +61,13 @@ const script = async () => {
         if (response._url.includes('https://cdn-api.co-vin.in/api/v2/appointment/sessions/calendarByPin')) {
             response.json().then((res) => {
                 res.centers.forEach( (center) => {
+                    var availableCap = 0;
                     center.sessions.forEach(session => {
                         if (session.available_capacity > 0 && session.min_age_limit == 18) {
-                            kaam_k_center.push(center);
+                           availableCap = availableCap + session.available_capacity; 
                         }
-                    });  
+                    });
+                    kaam_k_center.push('Availability: '+ availableCap + 'Center Address'+ center.address);  
                 } );
                 if (kaam_k_center.length > 0) {
                     console.log(kaam_k_center);
@@ -77,7 +79,7 @@ const script = async () => {
                         if(err)
                           console.log(err)
                         else
-                          console.log(info);
+                          console.log('Email sent successfully');
                      });
                 } else {
                     setTimeout(() => {
