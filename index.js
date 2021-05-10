@@ -18,7 +18,7 @@ var transporter = nodemailer.createTransport({
     subject: '18+ vaccination available book now', // Subject line
     html: "Hello This is email from server running at sanuj's pc to tell that 18+ vaccine is now available" // plain text body
   };
-
+var mobile = "";
 const script = async () => {
     const browser = await puppeteer.launch({
         executablePath: 'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe',
@@ -39,8 +39,9 @@ const script = async () => {
     await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36');
     await page.setViewport({ height: 600, width: 800 });
     await page.goto('https://selfregistration.cowin.gov.in/', { waitUntil: 'networkidle0' });
+    mobileNumber = await promptly.prompt("Enter mobile number to get OTP");
     await page.waitForSelector('#mat-input-0');
-    await page.type('#mat-input-0', "8882525935", { delay: 20});
+    await page.type('#mat-input-0', mobileNumber, { delay: 20});
     await page.click('div[class="covid-button-desktop ion-text-center"]', {delay: 2000});
     const otp = await promptly.prompt('OTP: ', { validator });
     await page.type('#mat-input-1', otp, { delay: 20 })
