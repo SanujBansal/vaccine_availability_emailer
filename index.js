@@ -59,6 +59,7 @@ const script = async () => {
     console.log('Server started successfully, lets wait for the notification on your device and email');
     await page.on('response', (response) => {
         if (response._url.includes('https://cdn-api.co-vin.in/api/v2/appointment/sessions/calendarByPin')) {
+            
             response.json().then((res) => {
                 res.centers.forEach( (center) => {
                     var availableCap = 0;
@@ -67,8 +68,12 @@ const script = async () => {
                            availableCap = availableCap + session.available_capacity; 
                         }
                     });
-                    kaam_k_center.push('Availability: '+ availableCap + 'Center Address'+ center.address);  
-                } );
+                    if (availableCap > 0) {
+                        kaam_k_center.push('Availability: '+ availableCap + ' Center Address'+ center.address);  
+                    }
+                });
+
+                
                 if (kaam_k_center.length > 0) {
                     console.log(kaam_k_center);
                     notifier.notify('Book slot for covid vaccine now');
