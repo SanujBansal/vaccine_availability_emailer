@@ -1,7 +1,7 @@
 const puppeteer = require("puppeteer-core");
 var nodemailer = require('nodemailer');
 const promptly = require('promptly');
-require('.env').configure();
+require('dotenv').configure();
 
 const notifier = require('node-notifier');
 

@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "dotenv": "^9.0.2",
     "node-notifier": "^9.0.1",
     "nodemailer": "^6.6.0",
     "promptly": "^3.2.0",
