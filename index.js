@@ -1,6 +1,7 @@
 const puppeteer = require("puppeteer-core");
 var nodemailer = require('nodemailer');
 const promptly = require('promptly');
+require('.env').configure();
 
 const notifier = require('node-notifier');
 
@@ -9,8 +10,8 @@ var receivers = [];
 var transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-           user: 'sanuj1770.cse16@chitkara.edu.in',
-           pass: 'sk@bansal123'
+           user: process.env.email,
+           pass: process.env.password
        }
    });
 
@@ -69,7 +70,7 @@ const script = async () => {
                         }
                     });
                     if (availableCap > 0) {
-                        kaam_k_center.push('Availability: '+ availableCap + ' Center Address'+ center.address);  
+                        kaam_k_center.push('Availability: '+ availableCap + ',  Address > '+ center.address);  
                     }
                 });
 
