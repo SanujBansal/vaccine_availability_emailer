@@ -9,8 +9,8 @@ const mailOptions = {
   var transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-           user: 'sanuj1770.cse16@chitkara.edu.in',
-           pass: 'sk@bansal123'
+           user: process.env.EMAIL,
+           pass: process.env.PASS
        }
    });
   transporter.sendMail(mailOptions, function (err, info) {
